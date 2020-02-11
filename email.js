@@ -8,7 +8,11 @@ function sendEmail() {
     var currentEmail = ss.getRange(i, 5).getValue();
     var nome = ss.getRange(i, 3).getValue();
     //Logger.log(currentEmail)
+
+    var messageBody = '';
+
+    var templateText = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Template").getRange(1,1).getValue();
     
-    MailApp.sendEmail(currentEmail, "Email de confirmação do FORM: ", "Olá "+nome)
+    //MailApp.sendEmail(currentEmail, "Email de confirmação do FORM: ", "Olá "+nome)
   }
 }
