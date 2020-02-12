@@ -19,10 +19,12 @@ function sendEmail() {
       
       var currentEmail = ss.getRange(i, 10).getValue();
       var nome = ss.getRange(i, 3).getValue();
+      var nomeProfessor = ss.getRange(i, 9).getValue();
+      var curso = ss.getRange(i, 7).getValue();
       var assunto = "Setor de Estágio. Confirmação de orientação";
-      var messageBody  = templateText.replace("{name}", nome);
+      var messageBody  = templateText.replace("{name}", nome).replace("{nome_professor}", nomeProfessor).replace("{curso}", curso);
       
-      var confirmado =ss.getRange(i, 13).getValue();
+      var confirmado =ss.getRange(i, 15).getValue();
       
       if(!confirmado){
         MailApp.sendEmail(currentEmail, assunto, messageBody)
@@ -41,13 +43,13 @@ function emailConfirm(){
   var lr = ss.getLastRow();
   
   for(var i=2; i<=lr; i++){
-    var qtd_email = ss.getRange(i, 12).getValue();
+    var qtd_email = ss.getRange(i, 14).getValue();
     qtd_email = qtd_email + 1;
     
-    var confirmado =ss.getRange(i, 13).getValue();
+    var confirmado =ss.getRange(i, 15).getValue();
       
     if(!confirmado){
-      ss.getRange(i, 12).setValue(qtd_email).setBackground('green').setFontColor('white').setFontFamily('bold');
+      ss.getRange(i, 14).setValue(qtd_email).setBackground('green').setFontColor('white').setFontFamily('bold');
     }
   }
   
