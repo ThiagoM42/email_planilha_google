@@ -9,6 +9,7 @@ function sendEmail() {
   var templateText = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Template").getRange(1,1).getValue();
   
   var cotaEmail = MailApp.getRemainingDailyQuota();
+  Logger.log(cotaEmail);
   
   if(lr>cotaEmail){
     Browser.msgBox("Cota de email diário ultrapassada "+(cotaEmail)+" tente novamente amanhã.");
@@ -16,13 +17,14 @@ function sendEmail() {
   else{ 
     for(var i=2; i<=lr; i++){
       
-      var currentEmail = ss.getRange(i, 5).getValue();
+      var currentEmail = ss.getRange(i, 10).getValue();
       var nome = ss.getRange(i, 3).getValue();
       var assunto = "Setor de Estágio. Confirmação de orientação";
       var messageBody  = templateText.replace("{name}", nome);
-      var emailEnviado =ss.getRange(i, 6).getValue();
       
-      if(emailEnviado){
+      var confirmado =ss.getRange(i, 13).getValue();
+      
+      if(!confirmado){
         MailApp.sendEmail(currentEmail, assunto, messageBody)
       }
     }//end for
@@ -32,13 +34,21 @@ function sendEmail() {
 }
 
 function emailConfirm(){
+  
   SpreadsheetApp.getActiveSpreadsheet().getSheetByName("dados").activate();
   var ss = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   
   var lr = ss.getLastRow();
   
   for(var i=2; i<=lr; i++){
-    ss.getRange(i, 6).setValue("Sim");
+    var qtd_email = ss.getRange(i, 12).getValue();
+    qtd_email = qtd_email + 1;
+    
+    var confirmado =ss.getRange(i, 13).getValue();
+      
+    if(!confirmado){
+      ss.getRange(i, 12).setValue(qtd_email).setBackground('green').setFontColor('white').setFontFamily('bold');
+    }
   }
   
 }
